@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "patch-bot",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-15",
+  "observability": { "enabled": true },
+  "triggers": { "crons": ["*/2 * * * *"] },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "patch-bot",
+      // Troque pelo id mostrado por `wrangler d1 create patch-bot` (tarefa 5.2).
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ]
+}

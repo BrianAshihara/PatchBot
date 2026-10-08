@@ -1,0 +1,88 @@
+{
+  "appnews": {
+    "appid": 730,
+    "newsitems": [
+      {
+        "gid": "1845383656394875",
+        "title": "Counter-Strike 2 Update",
+        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1845383656394875",
+        "is_external_url": true,
+        "author": "Vitaliy",
+        "contents": "[p]\\[ MISC ][/p][list][*][p]Pet photobook pages now have localized text art.[/p][/*][*][p]Added play menu buttons to manage downloaded Workshop maps.[/p][/*][*][p]Adjusted VK shader cache extension flags.[/p][/*][/list]",
+        "feedlabel": "Community Announcements",
+        "date": 1791243583,
+        "feedname": "steam_community_announcements",
+        "feed_type": 1,
+        "appid": 730,
+        "tags": [
+          "patchnotes"
+        ]
+      },
+      {
+        "gid": "1845383656387875",
+        "title": "Counter-Strike 2 Update",
+        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1845383656387875",
+        "is_external_url": true,
+        "author": "Vitaliy",
+        "contents": "[p]\\[ MISC ][/p][list][*][p]Agents now wear their equipped gloves during the photobooth photography sessions and in buy menu[/p][/*][*][p]Fixed grenade crosshair rendering when crosshair thickness is set to 3 pixels[/p][/*][*][p]Fixed formatting of titles in commend and report dialogs[/p][/*][*][p]Improved lighting in the Warehouse map[/p][/*][*][p]Updated workshop convars whitelist with the new crosshair settings[/p][/*][*][p]Stability improvements[/p][/*][/list]",
+        "feedlabel": "Community Announcements",
+        "date": 1790979853,
+        "feedname": "steam_community_announcements",
+        "feed_type": 1,
+        "appid": 730,
+        "tags": [
+          "patchnotes"
+        ]
+      },
+      {
+        "gid": "1845383656379136",
+        "title": "Counter-Strike 2 Update",
+        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1845383656379136",
+        "is_external_url": true,
+        "author": "Vitaliy",
+        "contents": "[p]\\[ MISC ][/p][list][*][p]Various clipping fixes in Rush maps[/p][/*][/list][p]\\[ CROSSHAIR ][/p][list][*][p]Fixed visualization of weapon inaccuracy + spread[/p][/*][*][p]Added crosshair outline color option[/p][/*][*][p]Added a new style \"Static Quadrant\"[/p][/*][*][p]Enabled grenade crosshairs in freeze time for insta-smokes (just hold any grenade attack button)[/p][/*][*][p]Allowed negative gaps for classic dynamic crosshair style[/p][/*][*][p]Changed the classic dynamic crosshair alpha increments to 0.01[/p][/*][*][p]Scope dot scale and color preferences are now included in the new crosshair share code[/p][/*][*][p]Changed the format of the crosshair share code to accommodate newly included crosshair settings[/p][/*][/list]",
+        "feedlabel": "Community Announcements",
+        "date": 1790808379,
+        "feedname": "steam_community_announcements",
+        "feed_type": 1,
+        "appid": 730,
+        "tags": [
+          "patchnotes"
+        ]
+      },
+      {
+        "gid": "1844751498232642",
+        "title": "Counter-Strike 2 Update",
+        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1844751498232642",
+        "is_external_url": true,
+        "author": "Vitaliy",
+        "contents": "[p]\\[ MISC ][/p][list][*][p]Fixed pixel-gaps in various Rush rooms.[/p][/*][*][p]Clipping adjustments in T/CT Castle rooms.[/p][/*][/list]",
+        "feedlabel": "Community Announcements",
+        "date": 1790635105,
+        "feedname": "steam_community_announcements",
+        "feed_type": 1,
+        "appid": 730,
+        "tags": [
+          "patchnotes"
+        ]
+      },
+      {
+        "gid": "1844751498226015",
+        "title": "Counter-Strike 2 Update",
+        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1844751498226015",
+        "is_external_url": true,
+        "author": "jo",
+        "contents": "[p]\\[ RUSH ][/p][list][*][p]Various gap fixes and clipping adjustments.[/p][/*][/list][p][/p][p]\\[ GAMEPLAY ][/p][list][*][p]Fixed some cases where loud reloads would persist while trying to stealth reload.[/p][/*][/list][p][/p][p]\\[ MISC ][/p][list][*][p]Added sv_clantags_enabled option so custom servers can disable clan tags.[/p][/*][*][p]The eggs of background players in main menu lobbies now rest in nests.[/p][/*][/list]",
+        "feedlabel": "Community Announcements",
+        "date": 1790373294,
+        "feedname": "steam_community_announcements",
+        "feed_type": 1,
+        "appid": 730,
+        "tags": [
+          "patchnotes"
+        ]
+      }
+    ],
+    "count": 452
+  }
+}

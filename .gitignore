@@ -1,0 +1,21 @@
+# Dependências e build
+node_modules/
+dist/
+
+# Estado local do wrangler (banco D1 local, cache)
+.wrangler/
+
+# Segredos: nunca vão para o git (o exemplo vai)
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+
+# Documentos de trabalho todo .md fica fora do git, menos o README
+*.md
+!README.md
+
+# Logs e arquivos do sistema
+*.log
+Thumbs.db
+desktop.ini
+.DS_Store

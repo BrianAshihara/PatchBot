@@ -1,0 +1,4 @@
+# Copie para .dev.vars e preencha (com os dados do Discord Developer Portal). Nunca faça commit do .dev.vars.
+DISCORD_TOKEN=
+DISCORD_PUBLIC_KEY=
+DISCORD_APPLICATION_ID=

@@ -1,0 +1,25 @@
+{
+  "name": "patch-bot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.node.json",
+    "test": "vitest run",
+    "cf-typegen": "wrangler types",
+    "record-fixtures": "node scripts/record-fixtures.ts",
+    "register-commands": "node --env-file=.dev.vars scripts/register-commands.ts"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.22.0",
+    "@types/node": "^24.19.1",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.11",
+    "wrangler": "^4.148.0"
+  },
+  "dependencies": {
+    "discord-api-types": "^0.38.56",
+    "discord-interactions": "^4.4.0"
+  }
+}
