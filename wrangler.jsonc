@@ -9,8 +9,7 @@
     {
       "binding": "DB",
       "database_name": "patch-bot",
-      // Troque pelo id mostrado por `wrangler d1 create patch-bot` (tarefa 5.2).
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "e59354ad-d753-41c8-a0dc-554c4397ed1b",
       "migrations_dir": "migrations"
     }
   ]
