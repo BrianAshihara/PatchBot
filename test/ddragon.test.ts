@@ -26,7 +26,7 @@ describe("ddragon", () => {
   it("fetches versions.json", async () => {
     const spy = vi.spyOn(globalThis, "fetch").mockResolvedValue(Response.json(["16.20.1"]));
     expect((await fetchLolPatch(5))[0]?.patchId).toBe("16.20");
-    expect(spy).toHaveBeenCalledWith(DDRAGON_VERSIONS_URL);
+    expect(spy).toHaveBeenCalledWith(DDRAGON_VERSIONS_URL, { cache: "no-store" });
   });
 
   it("is the source used for lol", async () => {

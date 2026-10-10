@@ -5,7 +5,8 @@ export const LOL_PATCH_NOTES_URL = "https://www.leagueoflegends.com/pt-br/news/g
 
 /** Busca o patch atual do LoL no Data Dragon. Uma subrequisição. */
 export async function fetchLolPatch(now = Date.now()): Promise<SourcePatch[]> {
-  const res = await fetch(DDRAGON_VERSIONS_URL);
+  // no-store: nunca usar uma resposta guardada em cache pela Cloudflare.
+  const res = await fetch(DDRAGON_VERSIONS_URL, { cache: "no-store" });
   if (!res.ok) throw new Error(`Data Dragon: HTTP ${res.status}`);
   return parseVersions(await res.json(), now);
 }

@@ -48,7 +48,7 @@ export async function discordRequest<T>(token: string, method: string, path: str
     headers: {
       Authorization: `Bot ${token}`,
       "Content-Type": "application/json",
-      "User-Agent": "DiscordBot (https://github.com/patch-bot, 0.1.0)",
+      "User-Agent": "DiscordBot (https://github.com/patch-bot, 0.1.1)",
     },
     body: body === undefined ? undefined : JSON.stringify(body),
   });

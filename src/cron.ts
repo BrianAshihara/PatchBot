@@ -72,6 +72,9 @@ export async function detect(db: D1Database, games: readonly Game[]): Promise<De
     for (const p of fresh) {
       statements.push(insertPatch(db, toRow(game, p, true)), queueDeliveries(db, game.key, p.patchId));
       result.newPatches.push({ game: game.key, patchId: p.patchId });
+      // Quanto tempo entre a publicação (data informada pela fonte) e a detecção; aparece nos logs da Cloudflare.
+      const lagSeconds = Math.round((Date.now() - p.publishedAt) / 1000);
+      console.log(JSON.stringify({ event: "new_patch", game: game.key, title: p.title, lagSeconds }));
     }
   });
 

@@ -93,9 +93,11 @@ describe("steam", () => {
   it("fetches the official announcements feed with full text", async () => {
     const spy = vi.spyOn(globalThis, "fetch").mockResolvedValue(Response.json(response));
     const patches = await fetchSteamPatches(730);
-    expect(spy).toHaveBeenCalledWith(steamNewsUrl(730));
-    expect(steamNewsUrl(730)).toContain("maxlength=0");
-    expect(steamNewsUrl(730)).toContain("feeds=steam_community_announcements");
+    const [url, init] = spy.mock.calls[0]!;
+    expect(String(url)).toMatch(/[?&]appid=730&count=5&maxlength=0&feeds=steam_community_announcements&_=\d+$/);
+    expect(init).toEqual({ cache: "no-store" });
+    // Um endereço diferente a cada pedido, para furar o cache da Steam.
+    expect(steamNewsUrl(730, 1)).not.toBe(steamNewsUrl(730, 2));
     expect(patches).toHaveLength(2);
   });
 

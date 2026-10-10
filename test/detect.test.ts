@@ -80,12 +80,15 @@ describe("detect", () => {
     await detect(db, GAMES);
     await setupGuild(db, "fan", "c1", ["deadlock"]);
     await setupGuild(db, "other", "c2", ["cs2"]);
+    const log = vi.spyOn(console, "log").mockImplementation(() => {});
 
     publish(1422450, "999", "Old Gods, New Blood", "[url=https://www.playdeadlock.com/oldgods]Six new heroes[/url]");
     const result = await detect(db, GAMES);
 
     expect(result.newPatches).toEqual([{ game: "deadlock", patchId: "999" }]);
     expect(result.subrequests).toBe(GAMES.length + 2);
+    // O atraso entre a publicação e a detecção vai para o log.
+    expect(log).toHaveBeenCalledWith(expect.stringMatching(/"event":"new_patch","game":"deadlock".*"lagSeconds":-?\d+/));
     const pending = await getPendingDeliveries(db, 100);
     expect(pending).toHaveLength(1);
     expect(pending[0]).toMatchObject({

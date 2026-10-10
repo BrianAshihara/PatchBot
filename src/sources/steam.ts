@@ -11,13 +11,18 @@ interface SteamNewsResponse {
   appnews?: { newsitems?: SteamNewsItem[] };
 }
 
-export function steamNewsUrl(appid: number): string {
-  return `https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=${appid}&count=5&maxlength=0&feeds=steam_community_announcements`;
+/**
+ * `now` vira o parâmetro `_`, que a Steam ignora: um endereço diferente a cada pedido fura o cache da API da Steam,
+ * que pode devolver uma resposta de alguns minutos atrás.
+ */
+export function steamNewsUrl(appid: number, now = Date.now()): string {
+  return `https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=${appid}&count=5&maxlength=0&feeds=steam_community_announcements&_=${now}`;
 }
 
 /** Busca os anúncios oficiais mais recentes de um app da Steam, mantendo só os posts de patch. Uma subrequisição. */
 export async function fetchSteamPatches(appid: number, titleFilter?: RegExp): Promise<SourcePatch[]> {
-  const res = await fetch(steamNewsUrl(appid));
+  // no-store: nunca usar uma resposta guardada em cache pela Cloudflare.
+  const res = await fetch(steamNewsUrl(appid), { cache: "no-store" });
   if (!res.ok) throw new Error(`Steam news ${appid}: HTTP ${res.status}`);
   const data = await res.json<SteamNewsResponse>();
   return parseSteamNews(data, appid, titleFilter);
