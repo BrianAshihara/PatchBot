@@ -14,15 +14,24 @@ type Fixture = typeof deadlock;
 let steam: Record<number, Fixture>;
 let lolVersions: string[];
 let failing: Set<string>;
+/** Páginas de notas do LoL que "existem" no site simulado. */
+let lolPages: Set<string>;
+let lolChecks: string[];
 
 beforeEach(() => {
   steam = { 1422450: deadlock, 730: cs2, 2767030: marvelRivals, 985810: grandChase } as Record<number, Fixture>;
   lolVersions = ["16.19.1"];
   failing = new Set();
+  lolPages = new Set();
+  lolChecks = [];
   vi.spyOn(globalThis, "fetch").mockImplementation(async (input) => {
     const url = String(input);
     if ([...failing].some((part) => url.includes(part))) return new Response("down", { status: 500 });
     if (url.includes("ddragon")) return Response.json(lolVersions);
+    if (url.includes("leagueoflegends.com")) {
+      lolChecks.push(url);
+      return new Response(null, { status: [...lolPages].some((p) => url.includes(p)) ? 200 : 404 });
+    }
     const appid = Number(new URL(url).searchParams.get("appid"));
     return Response.json(steam[appid]);
   });
@@ -119,7 +128,46 @@ describe("detect", () => {
 
     lolVersions = ["16.20.1"];
     expect((await detect(db, GAMES)).newPatches).toEqual([{ game: "lol", patchId: "16.20" }]);
-    expect((await getPendingDeliveries(db, 100))[0]).toMatchObject({ patch_id: "16.20", body: null });
+    expect((await getPendingDeliveries(db, 100))[0]).toMatchObject({ patch_id: "16.20", title: "Patch 26.20", body: null });
+  });
+
+  describe("LoL notes link", () => {
+    const NEWS = "https://www.leagueoflegends.com/pt-br/news/game-updates";
+
+    async function newLolPatch() {
+      await detect(db, GAMES);
+      lolChecks = [];
+      lolVersions = ["16.20.1"];
+      const result = await detect(db, GAMES);
+      const row = await db.prepare("SELECT url FROM patches WHERE game = 'lol' AND patch_id = '16.20'").first<{ url: string }>();
+      return { result, url: row!.url };
+    }
+
+    it("links straight to the notes in the current format, with one extra subrequest", async () => {
+      lolPages.add("league-of-legends-patch-26-20-notes");
+      const { result, url } = await newLolPatch();
+      expect(url).toBe(`${NEWS}/league-of-legends-patch-26-20-notes/`);
+      expect(lolChecks).toHaveLength(1);
+      expect(result.subrequests).toBe(GAMES.length + 2 + 1);
+    });
+
+    it("tries the older format when the current one doesn't exist", async () => {
+      lolPages.add("/patch-26-20-notes");
+      const { url } = await newLolPatch();
+      expect(url).toBe(`${NEWS}/patch-26-20-notes/`);
+      expect(lolChecks).toHaveLength(2);
+    });
+
+    it("falls back to the official patch notes list when no page exists", async () => {
+      const { url } = await newLolPatch();
+      expect(url).toBe("https://www.leagueoflegends.com/pt-br/news/tags/patch-notes/");
+    });
+
+    it("never checks links while seeding or when nothing changed", async () => {
+      await detect(db, GAMES);
+      await detect(db, GAMES);
+      expect(lolChecks).toEqual([]);
+    });
   });
 
   it("announces the first patch of a game whose recent posts were all filtered out at seeding", async () => {

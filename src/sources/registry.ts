@@ -13,6 +13,8 @@ export interface SourcePatch {
   contents: string | null;
   /** Primeira imagem do post, se houver. */
   image: string | null;
+  /** Links mais diretos que `url`, em ordem de preferência; a detecção usa o primeiro que existir. */
+  urlCandidates?: string[];
   /** Unix em milissegundos. */
   publishedAt: number;
 }

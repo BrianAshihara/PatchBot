@@ -49,12 +49,12 @@ export async function detect(db: D1Database, games: readonly Game[]): Promise<De
   );
 
   const statements: D1PreparedStatement[] = [];
-  games.forEach((game, i) => {
+  for (const [i, game] of games.entries()) {
     const outcome = fetched[i]!;
     if (outcome.status === "rejected") {
       console.error(`detect: source ${game.key} failed`, outcome.reason);
       result.failed.push(game.key);
-      return;
+      continue;
     }
     const knownIds = state.recent.get(game.key)!;
     // Do mais antigo para o mais novo, para as entregas seguirem a ordem de publicação.
@@ -66,23 +66,46 @@ export async function detect(db: D1Database, games: readonly Game[]): Promise<De
       result.seeded.push(game.key);
       statements.push(markSeeded(db, game.key));
       fresh.forEach((p, j) => statements.push(insertPatch(db, toRow(game, p, j === fresh.length - 1))));
-      return;
+      continue;
     }
 
     for (const p of fresh) {
+      if (p.urlCandidates) {
+        const resolved = await firstExisting(p.urlCandidates);
+        result.subrequests += resolved.tried;
+        if (resolved.url) p.url = resolved.url;
+      }
       statements.push(insertPatch(db, toRow(game, p, true)), queueDeliveries(db, game.key, p.patchId));
       result.newPatches.push({ game: game.key, patchId: p.patchId });
       // Quanto tempo entre a publicação (data informada pela fonte) e a detecção; aparece nos logs da Cloudflare.
       const lagSeconds = Math.round((Date.now() - p.publishedAt) / 1000);
       console.log(JSON.stringify({ event: "new_patch", game: game.key, title: p.title, lagSeconds }));
     }
-  });
+  }
 
   if (statements.length > 0) {
     await db.batch(statements);
     result.subrequests++;
   }
   return result;
+}
+
+/**
+ * O primeiro endereço que existe (HEAD com resposta 2xx), em ordem. Só roda para patches novos, então custa no
+ * máximo uma subrequisição por candidato a cada patch. Falha de rede conta como "não existe".
+ */
+async function firstExisting(urls: string[]): Promise<{ url: string | null; tried: number }> {
+  let tried = 0;
+  for (const url of urls) {
+    tried++;
+    try {
+      const res = await fetch(url, { method: "HEAD", cache: "no-store" });
+      if (res.ok) return { url, tried };
+    } catch {
+      // tenta o próximo
+    }
+  }
+  return { url: null, tried };
 }
 
 /** Conta as subrequisições (fetch + D1) que ainda restam nesta invocação. */
